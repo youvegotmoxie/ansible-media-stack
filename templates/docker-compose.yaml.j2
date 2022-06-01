@@ -1,0 +1,225 @@
+# to-do: unfuck the share itself (rename ZFS dataset to "data" and mount at /srv/samba/data) and then unfuck file paths
+version: "3.7"
+services:
+# stack administration and monitoring
+  watchtower:
+    restart: always
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --cleanup --interval 300
+    environment:
+      - WATCHTOWER_NOTIFICATIONS=gotify
+      - WATCHTOWER_NOTIFICATION_GOTIFY_URL=https://push.srsbzns.net/
+      - WATCHTOWER_NOTIFICATION_GOTIFY_TOKEN=AvWfAbh_I5QGiku
+  organizr:
+    restart: always
+    image: organizr/organizr 
+    volumes:
+      - ${USERDIR}/docker/organizr:/config
+      - ${USERDIR}/docker/shared:/shared
+    ports:
+      - "90:80"
+    environment:
+      - fpm=true
+      - branch=v2-master
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+  gotify:
+    image: gotify/server
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${USERDIR}/docker/gotify/data:/app/data
+    ports:
+      - 81:80
+    restart: unless-stopped
+# acquistion
+  radarr:
+    image: lscr.io/linuxserver/radarr
+    volumes:
+      - ${USERDIR}/docker/radarr:/config
+      - ${USERDIR}/docker/shared:/shared
+      - /srv/samba/share:/data
+      - "/etc/localtime:/etc/localtime:ro"
+    ports:
+      - "7878:7878"
+    restart: always
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+  sonarr:
+    image: lscr.io/linuxserver/sonarr
+    volumes:
+      - ${USERDIR}/docker/sonarr:/config
+      - ${USERDIR}/docker/shared:/shared
+      - /srv/samba/share:/data
+      - "/etc/localtime:/etc/localtime:ro"
+    ports:
+        - "8989:8989"
+    restart: always
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+  mylar3:
+    image: lscr.io/linuxserver/mylar3
+    restart: always
+    ports:
+      - "8090:8090"
+    volumes:
+      - ${USERDIR}/docker/mylar3:/config
+      - /srv/samba/share:/data
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+  readarr-ebooks:
+    image: lscr.io/linuxserver/readarr:develop
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${USERDIR}/docker/readarr-ebooks:/config
+      - /srv/samba/share:/data
+    ports:
+      - 8787:8787
+    restart: unless-stopped
+  readarr-audiobooks:
+    image: lscr.io/linuxserver/readarr:develop
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${USERDIR}/docker/readarr-audiobooks:/config
+      - /srv/samba/share:/data
+    ports:
+      - 8887:8787
+    restart: unless-stopped
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:develop
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${USERDIR}/docker/prowlarr:/config
+    ports:
+      - 9696:9696
+    restart: unless-stopped
+  jackett:
+    image: lscr.io/linuxserver/jackett
+    volumes:
+      - ${USERDIR}/docker/jackett:/config
+      - ${USERDIR}/docker/shared:/shared
+      - "/etc/localtime:/etc/localtime:ro"
+    ports:
+      - "9117:9117"
+    restart: always
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+  transmission:
+    image: lscr.io/linuxserver/transmission
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - UMASK_SET=002
+      - TRANSMISSION_WEB_HOME=/flood-for-transmission/
+    volumes:
+      - ${USERDIR}/docker/transmission:/config
+      - ${USERDIR}/docker/shared:/shared
+      - /srv/samba/share/torrents:/data/torrents
+    ports:
+      - 9091:9091
+      - 51413:51413
+      - 51413:51413/udp
+    restart: unless-stopped
+  sabnzbd:
+    image: lscr.io/linuxserver/sabnzbd
+    volumes:
+      - ${USERDIR}/docker/sabnzbd:/config
+      - ${USERDIR}/docker/shared:/shared
+      - /srv/samba/share/usenet:/data/usenet
+    ports:
+        - "8080:8080"
+    restart: always
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+# media servers & companion services
+  plex:
+    restart: always
+    image: plexinc/pms-docker
+    network_mode: host
+    volumes:
+      - ${USERDIR}/docker/plex:/config
+      - ${USERDIR}/docker/shared:/shared
+      - ${USERDIR}/docker/plex/plex_tmp:/transcode
+      - /srv/samba/share/media:/media
+    environment:
+      - TZ=${TZ}
+      - HOSTNAME="plex.srsbzns.net"
+      - PLEX_CLAIM=""
+      - PLEX_UID=${PUID}
+      - PLEX_GID=${PGID}
+      - ADVERTISE_IP="http://192.168.86.3:32400/"
+  tautulli:
+    restart: always
+    image: linuxserver/tautulli
+    volumes:
+      - ${USERDIR}/docker/tautulli/config:/config
+      - ${USERDIR}/docker/tautulli/logs:/logs:ro
+      - ${USERDIR}/docker/shared:/shared
+    ports:
+      - "8181:8181"
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+  ombi:
+    image: lscr.io/linuxserver/ombi
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${USERDIR}/docker/ombi:/config
+    ports:
+      - 3579:3579
+    restart: unless-stopped
+  calibre:
+    image: lscr.io/linuxserver/calibre
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${USERDIR}/docker/calibre:/config
+      - /srv/samba/share/media/ebooks:/media/ebooks
+    ports:
+      - 2665:8080
+      - 2666:8081
+    restart: unless-stopped
+  komga:
+    image: gotson/komga
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${USERDIR}/docker/komga:/config
+      - /srv/samba/share/media/comics:/media/comics
+    ports:
+      - 2667:8080
+      - 2668:8081
+    restart: unless-stopped

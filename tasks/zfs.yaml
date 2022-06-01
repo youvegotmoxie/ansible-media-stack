@@ -1,0 +1,15 @@
+---
+- name: "Create ZFS dataset for Docker"
+  community.general.zfs:
+    name: "{{ optional_tasks.zpool_name }}/docker"
+    state: present
+    extra_zfs_properties:
+      mountpoint: "{{ homedir }}/{{ optional_tasks.compose_basedir }}"
+
+- name: "Fix dataset mountpoint permissions"
+  file:
+    state: directory
+    owner: "{{ docker.user }}"
+    group: "{{ docker.user }}"
+    mode: 0755
+    path: "{{ homedir }}/{{ optional_tasks.compose_basedir }}"
