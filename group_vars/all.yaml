@@ -22,4 +22,42 @@ optional_tasks:
   compose_basedir: docker
   compose_file_dirs:
   - media_stack
-  - timemachine_backups
+  - media_stack/radarr
+  - media_stack/sonarr
+  - media_stack/jackett
+  - media_stack/shared
+  - media_stack/data
+  - media_stack/torrents
+  - media_stack/plex
+  - media_stack/ombi
+  - media_stack/transmission
+  - media_stack/tautulli
+  - media_stack/tautulli/logs
+  - media_stack/tautulli/config
+  compose_file:
+    composeVersion: "3.7"
+    restartPolicy: unless-stopped
+    containers:
+      radarr:
+        enabled: true
+      sonarr:
+        enabled: true
+      jackett:
+        enabled: true
+      transmission:
+        enabled: true
+        flood:
+          enabled: false
+      plex:
+        enabled: true
+        tautulli:
+          enabled: true
+      ombi:
+        enabled: true
+    environment:
+      PLEX_CLAIM: "changeme"
+      PLEX_ADVERTISE_IP: "http://changeme:32400/"
+      PUID: "1001"
+      PGID: "1001"
+      TZ: "America/Chicago"
+      PLEX_HOSTNAME: "plex.local"

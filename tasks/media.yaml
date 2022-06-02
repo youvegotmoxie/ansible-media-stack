@@ -1,0 +1,8 @@
+---
+- name: "Copy media stack Docker compose file"
+  template:
+    src: media-stack.yaml.j2
+    dest: "{{ homedir }}/{{ optional_tasks.compose_basedir }}/media_stack/docker-compose.yaml"
+    owner: "{{ docker.user }}"
+    group: "{{ docker.user }}"
+    mode: 0600
