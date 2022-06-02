@@ -17,7 +17,7 @@ docker:
 
 optional_tasks:
   setup_compose: true
-  setup_docker_zfs: true
+  setup_docker_zfs: false
   zpool_name: storage
   compose_basedir: docker
   compose_file_dirs:

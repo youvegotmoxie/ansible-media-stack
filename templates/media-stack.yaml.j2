@@ -1,5 +1,6 @@
 version: "{{ optional_tasks.compose_file.composeVersion }}"
 services:
+{% if optional_tasks.compose_file.containers.radarr.enabled is true %}
   radarr:
     image: lscr.io/linuxserver/radarr
     container_name: radarr
@@ -17,6 +18,8 @@ services:
       - PUID={{ optional_tasks.compose_file.environment.PUID }}
       - PGID={{ optional_tasks.compose_file.environment.PGID }}
       - TZ="{{ optional_tasks.compose_file.environment.TZ }}"
+{% endif %}
+{% if optional_tasks.compose_file.containers.sonarr.enabled is true %}
   sonarr:
     image: lscr.io/linuxserver/sonarr
     container_name: sonarr
@@ -34,6 +37,8 @@ services:
       - PUID={{ optional_tasks.compose_file.environment.PUID }}
       - PGID={{ optional_tasks.compose_file.environment.PGID }}
       - TZ="{{ optional_tasks.compose_file.environment.TZ }}"
+{% endif %}
+{% if optional_tasks.compose_file.containers.jackett.enabled is true %}
   jackett:
     image: lscr.io/linuxserver/jackett
     container_name: jackett
@@ -50,6 +55,8 @@ services:
       - PGID={{ optional_tasks.compose_file.environment.PGID }}
       - TZ="{{ optional_tasks.compose_file.environment.TZ }}"
     restart: {{ optional_tasks.compose_file.restartPolicy }}
+{% endif %}
+{% if optional_tasks.compose_file.containers.transmission.enabled is true %}
   transmission:
     image: lscr.io/linuxserver/transmission
     container_name: transmission
@@ -72,6 +79,8 @@ services:
     networks:
     - media
     restart: {{ optional_tasks.compose_file.restartPolicy }}
+{% endif %}
+{% if optional_tasks.compose_file.containers.plex.enabled is true %}
   plex:
     image: plexinc/pms-docker
     container_name: plex
@@ -99,6 +108,8 @@ services:
     networks:
     - media
     restart: {{ optional_tasks.compose_file.restartPolicy }}
+{% endif %}
+{% if optional_tasks.compose_file.containers.plex.tautulli.enabled is true %}
   tautulli:
     image: linuxserver/tautulli
     container_name: tautulli
@@ -115,6 +126,8 @@ services:
       - PGID={{ optional_tasks.compose_file.environment.PGID }}
       - TZ="{{ optional_tasks.compose_file.environment.TZ }}"
     restart: {{ optional_tasks.compose_file.restartPolicy }}
+{% endif %}
+{% if optional_tasks.compose_file.containers.ombi.enabled is true %}
   ombi:
     image: lscr.io/linuxserver/ombi
     container_name: ombi
@@ -129,6 +142,7 @@ services:
     networks:
     - media
     restart: {{ optional_tasks.compose_file.restartPolicy }}
+{% endif %}
 
 networks:
   media:
