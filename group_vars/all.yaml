@@ -47,7 +47,7 @@ optional_tasks:
       transmission:
         enabled: true
         flood:
-          enabled: false
+          enabled: true
       plex:
         enabled: true
         tautulli:
@@ -57,7 +57,7 @@ optional_tasks:
     environment:
       PLEX_CLAIM: "changeme"
       PLEX_ADVERTISE_IP: "http://changeme:32400/"
-      PUID: "1001"
-      PGID: "1001"
+      PUID: "1000"
+      PGID: "1000"
       TZ: "America/Chicago"
       PLEX_HOSTNAME: "plex.local"
