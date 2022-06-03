@@ -1,5 +1,5 @@
 [media]
-docker ansible_host=192.168.1.75
+media ansible_host=127.0.0.1
 
 [media:vars]
 ansible_become=yes

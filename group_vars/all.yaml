@@ -25,7 +25,6 @@ optional_tasks:
   - media_stack/radarr
   - media_stack/sonarr
   - media_stack/jackett
-  - media_stack/shared
   - media_stack/data
   - media_stack/torrents
   - media_stack/plex
@@ -56,7 +55,6 @@ optional_tasks:
         enabled: true
     environment:
       PLEX_CLAIM: "changeme"
-      PLEX_ADVERTISE_IP: "http://changeme:32400/"
       PUID: "1000"
       PGID: "1000"
       TZ: "America/Chicago"
