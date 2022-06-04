@@ -26,7 +26,9 @@ optional_tasks:
   - media_stack/sonarr
   - media_stack/jackett
   - media_stack/data
-  - media_stack/torrents
+  - media_stack/data/tv
+  - media_stack/data/movies
+  - media_stack/data/music
   - media_stack/plex
   - media_stack/ombi
   - media_stack/transmission
@@ -52,9 +54,9 @@ optional_tasks:
         tautulli:
           enabled: true
       ombi:
-        enabled: true
+        enabled: false
     environment:
-      PLEX_CLAIM: "changeme"
+      PLEX_CLAIM: claim
       PUID: "1000"
       PGID: "1000"
       TZ: "America/Chicago"

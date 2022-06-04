@@ -68,7 +68,9 @@ services:
 {% endif %}
     volumes:
       - {{ homedir }}/{{ optional_tasks.compose_basedir }}/media_stack/transmission:/config
-      - {{ homedir }}/{{ optional_tasks.compose_basedir }}/media_stack/torrents:/data/torrents
+      - {{ homedir }}/{{ optional_tasks.compose_basedir }}/media_stack/data/tv:/data/torrents/tv
+      - {{ homedir }}/{{ optional_tasks.compose_basedir }}/media_stack/data/music:/data/torrents/music
+      - {{ homedir }}/{{ optional_tasks.compose_basedir }}/media_stack/data/movies:/data/torrents/movies
     ports:
       - 9091:9091
       - 51413:51413
@@ -84,9 +86,9 @@ services:
     volumes:
       - {{ homedir }}/{{ optional_tasks.compose_basedir }}/media_stack/plex:/config
       - {{ homedir }}/{{ optional_tasks.compose_basedir }}/media_stack/data:/data
+    hostname: {{ optional_tasks.compose_file.environment.PLEX_HOSTNAME }}
     environment:
       - TZ="{{ optional_tasks.compose_file.environment.TZ }}"
-      - HOSTNAME="{{ optional_tasks.compose_file.environment.PLEX_HOSTNAME }}"
       - PLEX_CLAIM="{{ optional_tasks.compose_file.environment.PLEX_CLAIM }}"
       - PLEX_UID={{ optional_tasks.compose_file.environment.PUID }}
       - PLEX_GID={{ optional_tasks.compose_file.environment.PGID }}
