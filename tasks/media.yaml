@@ -31,3 +31,8 @@
     owner: "{{ docker.user }}"
     group: "{{ docker.user }}"
   changed_when: no
+
+- name: "Install additional packages"
+  package:
+    state: latest
+    name: "{{ additional_packages }}"
