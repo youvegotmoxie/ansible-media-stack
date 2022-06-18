@@ -71,6 +71,7 @@ services:
       - {{ homedir }}/{{ optional_tasks.compose_basedir }}/media_stack/data/tv:/data/torrents/tv
       - {{ homedir }}/{{ optional_tasks.compose_basedir }}/media_stack/data/music:/data/torrents/music
       - {{ homedir }}/{{ optional_tasks.compose_basedir }}/media_stack/data/movies:/data/torrents/movies
+      - {{ homedir }}/{{ optional_tasks.compose_basedir }}/media_stack/data/downloads:/data/torrents/downloads
     ports:
       - 9091:9091
       - 51413:51413
