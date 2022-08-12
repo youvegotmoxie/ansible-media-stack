@@ -1,5 +1,5 @@
 [media]
-media-server ansible_host=10.0.0.2
+snafu-storage ansible_host=192.168.1.75
 
 [media:vars]
 ansible_become=yes

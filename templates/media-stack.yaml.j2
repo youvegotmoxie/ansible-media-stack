@@ -10,6 +10,7 @@ services:
       - "/etc/localtime:/etc/localtime:ro"
     ports:
       - "7878:7878"
+    mem_limit: {{ optional_tasks.compose_file.containers.radarr.memoryLimit }}
     networks:
     - media
     restart: {{ optional_tasks.compose_file.restartPolicy }}
@@ -28,6 +29,7 @@ services:
       - "/etc/localtime:/etc/localtime:ro"
     ports:
         - "8989:8989"
+    mem_limit: {{ optional_tasks.compose_file.containers.sonarr.memoryLimit }}
     networks:
     - media
     restart: {{ optional_tasks.compose_file.restartPolicy }}
@@ -46,6 +48,7 @@ services:
       - "/etc/localtime:/etc/localtime:ro"
     ports:
       - "9117:9117"
+    mem_limit: {{ optional_tasks.compose_file.containers.jackett.memoryLimit }}
     networks:
     - media
     environment:
@@ -76,6 +79,7 @@ services:
       - 9091:9091
       - 51413:51413
       - 51413:51413/udp
+    mem_limit: {{ optional_tasks.compose_file.containers.transmission.memoryLimit }}
     networks:
     - media
     restart: {{ optional_tasks.compose_file.restartPolicy }}
@@ -104,6 +108,7 @@ services:
     - 32412:32412/udp
     - 32413:32413/udp
     - 32414:32414/udp
+    mem_limit: {{ optional_tasks.compose_file.containers.plex.memoryLimit }}
     networks:
     - media
     restart: {{ optional_tasks.compose_file.restartPolicy }}
@@ -117,6 +122,7 @@ services:
       - {{ homedir }}/{{ optional_tasks.compose_basedir }}/media_stack/tautulli/logs:/logs:ro
     ports:
       - "8181:8181"
+    mem_limit: {{ optional_tasks.compose_file.containers.plex.tautulli.memoryLimit }}
     networks:
     - media
     environment:

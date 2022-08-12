@@ -45,23 +45,29 @@ optional_tasks:
     containers:
       radarr:
         enabled: true
+        memoryLimit: 1G
       sonarr:
         enabled: true
+        memoryLimit: 1G
       jackett:
         enabled: true
+        memoryLimit: 1G
       transmission:
         enabled: true
+        memoryLimit: 1G
         flood:
           enabled: true
       plex:
         enabled: true
+        memoryLimit: 8G
         tautulli:
           enabled: true
+          memoryLimit: 1G
       ombi:
         enabled: false
     environment:
-      PLEX_CLAIM: claimhere
+      PLEX_CLAIM: claim--
       PUID: "1000"
       PGID: "1000"
       TZ: "America/Chicago"
-      PLEX_HOSTNAME: "plex.local"
+      PLEX_HOSTNAME: "snafu-plex.local"
