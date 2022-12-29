@@ -12,6 +12,14 @@
     name: python3-pip
     state: latest
 
+- name: "Copy Extract Script"
+  copy:
+    src: extract.sh
+    dest: "{{ homedir }}/{{ optional_tasks.compose_basedir }}/media_stack/transmission/extract.sh"
+    owner: "{{ docker.user }}"
+    group: "{{ docker.user }}"
+    mode: 0775
+
 - name: "Install Python Docker SDK"
   pip:
     name:
