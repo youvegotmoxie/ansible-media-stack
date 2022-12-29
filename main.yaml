@@ -4,6 +4,7 @@
   hosts: media
   vars_files:
     - group_vars/all.yaml
+    - group_vars/plex.yaml
   tasks:
     - assert:
         that:

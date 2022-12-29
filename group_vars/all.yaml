@@ -20,7 +20,7 @@ additional_packages:
 
 optional_tasks:
   setup_compose: true
-  setup_docker_zfs: false
+  setup_docker_zfs: true
   zpool_name: storage
   compose_basedir: docker
   compose_file_dirs:
@@ -59,15 +59,13 @@ optional_tasks:
           enabled: true
       plex:
         enabled: true
-        memoryLimit: 8G
+        memoryLimit: 12G
         tautulli:
           enabled: true
           memoryLimit: 1G
       ombi:
         enabled: false
     environment:
-      PLEX_CLAIM: claim--
       PUID: "1000"
       PGID: "1000"
       TZ: "America/Chicago"
-      PLEX_HOSTNAME: "snafu-plex.local"

@@ -91,10 +91,10 @@ services:
     volumes:
       - {{ homedir }}/{{ optional_tasks.compose_basedir }}/media_stack/plex:/config
       - {{ homedir }}/{{ optional_tasks.compose_basedir }}/media_stack/data:/data
-    hostname: {{ optional_tasks.compose_file.environment.PLEX_HOSTNAME }}
+    hostname: {{ PLEX_HOSTNAME | default("localhost") }}
     environment:
       - TZ="{{ optional_tasks.compose_file.environment.TZ }}"
-      - PLEX_CLAIM="{{ optional_tasks.compose_file.environment.PLEX_CLAIM }}"
+      - PLEX_CLAIM="{{ PLEX_CLAIM | default("myclaim") }}"
       - PLEX_UID={{ optional_tasks.compose_file.environment.PUID }}
       - PLEX_GID={{ optional_tasks.compose_file.environment.PGID }}
       - ADVERTISE_IP="http://{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}:32400/"
